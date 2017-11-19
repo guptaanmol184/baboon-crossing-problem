@@ -1,8 +1,8 @@
 from visual import *
-from PIL import Image # Must install PIL
+import Image # Must install PIL
 name = "sky" # PUT IMAGE NAME WITH OUT EXTENSION HERE (.JPG ONLY)
-width = 4096 # must be power of 2
-height = 256 # must be power of 2
+width = 512 # must be power of 2
+height = 512 # must be power of 2
 im = Image.open(name+".jpg")
 #print(im.size) # optionally, see size of image
 # Optional cropping:

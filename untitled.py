@@ -4,6 +4,7 @@
 from __future__ import division, print_function
 from visual import *
 from pygame import mixer # Load the required library
+import Image
 
 # threading imports
 import threading
@@ -21,22 +22,43 @@ import random
 # set 16:9 aspect ration of the screen
 scene.width = 1200
 scene.height = 675
-# scene.autoscale = False
+#scene.autoscale = False
+scene.range = (30,40,30)
+scene.forward = (0, -0.5, -1)
 
 ################################################
 # LANDSCPAE DEFINATION
 ################################################
 
+groud_color = (139/255,69/255,19/255)
+
+
+
+
 # box.size = (lenght(x), height(y), width(z))
+#background wall
+tex = materials.texture( data = materials.loadTGA("textures/sky"))
+wall = box(pos = (0,0,-20),size=(90,50,1),material = tex, mapping='sign')
+#wall.rotate(angle=pi/2,origin=pos,axis=(0,1,0))
 # Left platform
-lf_plat = box(pos = (-20,-10,0), size = (20, 10, 20), material = materials.rough)
+lf_plat = box(pos = (-20,-10,0), size = (20, 10, 20), material = materials.rough,color =groud_color)
 # Right platform
-rt_plat = box(pos = (20,-10,0), size = (20, 10, 20), material = materials.rough)
+rt_plat = box(pos = (20,-10,0), size = (20, 10, 20), material = materials.rough, color= groud_color) 
 # Rope
-rope_texture = materials.texture( data = materials.loadTGA("textures/rope.tga"), mapping = "spherical")
+rope_texture = materials.texture( data = materials.loadTGA("textures/rope.tga"),mapping='spherical')
 rope = cylinder(pos = (-10,-6,0), length = 20, radius = 1, material = rope_texture)
 #tree
-
+treel = cylinder(pos = (-15,-6,-5), length = 10, radius = 1, material = materials.wood,axis = (0,1,0))
+treer = cylinder(pos = (15,-6,-5), length = 10, radius = 1, material = materials.wood,axis = (0,1,0))
+#leaves
+leafl1 = cone(pos= (-15,1,-5), length = 8, radius = 3, color = color.green ,axis = (0,1,0))
+leafl2 = cone(pos= (-15,4,-5), length = 5, radius = 2.5, color = color.green ,axis = (0,1,0))
+leafr1 = cone(pos= (15,1,-5), length = 8, radius = 3, color = color.green ,axis = (0,1,0))
+leafr2 = cone(pos= (15,4,-5), length = 5, radius = 2.5, color = color.green ,axis = (0,1,0))
+#ground
+ground = box(pos = (0,-15,0), size = (60,1,20), material = materials.rough, color = groud_color)
+#water
+water = box(pos = (0,-11.5,0), size = (20,7,20), material = materials.rough, color = color.blue)
 
 
 ###########################################################
@@ -99,13 +121,12 @@ class rt_monkey:
 
 class lt_monkey:
     def __init__(self, x):
-        self.arr = arrow(pos = (x, -5, 0), axis=(0,5,0), color = color.green)
+        self.arr = arrow(pos = (x, -5, 0), axis=(0,5,0), color = color.cyan)
 
     def go(self):
         while self.arr.x < 11:
             print('gonna go')
             self.arr.x+=1
-        self.arr.color = color.cyan
         #self.disappear()
 
     def disappear(self):
@@ -143,6 +164,26 @@ def rt_gui_go():
         rate(1)
         arr.x-=1
 
+def baboon_jump(arr):
+    i=0
+    while True:
+        if i%2==0:
+            arr.pos.y=arr.pos.y+1
+        else:
+            arr.pos.y=arr.pos.y-1
+        arr.pos = arr.pos + (random.randint(-1,1),0,0)                
+        
+        # left and reight
+        if((arr.x > 0 and arr.x < 10) or (arr.x > -10 and arr.x < 0)):
+            break 
+        # left and right
+       # if((arr.x > 0 and arr.x < 10) or (arr.x > -10 and arr.x < 0)):
+#        if i == 6:
+#            break
+        i+=1
+        rate(5)
+
+
 ###########################################################
 # GUI FUNCTIONS END $
 ###########################################################
@@ -161,11 +202,17 @@ def left_baboon_go(baboon):
     while baboon.x < 11:
         rate(10)
         baboon.pos.x+=1
-    baboon.visible = False
+    #baboon.visible = False
     left_multiplex.release()
     print('->baboon {} got off the rope.'.format(threading.current_thread().getName()))
 
     left_switch.unlock(empty)
+    
+    while baboon.pos.z>-8:
+        rate(10)
+        baboon.pos.z-=1 
+    baboon_jump(baboon)              
+    baboon.visible = False
 
 def right_baboon_go(baboon):
     turnstile.acquire()
@@ -179,12 +226,18 @@ def right_baboon_go(baboon):
     while baboon.x > -11:
         rate(10)
         baboon.pos.x-=1
-    baboon.visible = False
+    #baboon.visible = False
     right_multiplex.release()
     print('->baboon {} got off the rope.'.format(threading.current_thread().getName()))
 
     right_switch.unlock(empty)
 
+    
+    while baboon.pos.z>-8:
+        rate(10)
+        baboon.pos.z-=1 
+    baboon_jump(baboon)              
+    baboon.visible = False
 #print("Enter number of left baboons: ")
 #left_baboon_count = int(input())
 #print("Enter number of right baboons: ")
@@ -194,6 +247,7 @@ threads = []
 
 mixer.init()
 mixer.music.load('Five - Little.mp3')
+#mixer.music.load('zoo.mp3')
 mixer.music.play()
 
 for i in range(left_baboon_count):
