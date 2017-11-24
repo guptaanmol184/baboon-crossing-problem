@@ -41,3 +41,5 @@ right_baboon_count = 15
 mixer.music.load('songs/mowgli-sahara-theme.mp3')
 #mixer.music.load('songs/monkey.mp3')
 ```
+## Note:
+Currently only _python2_ is supported. Support for _python3_ may be added in future.
