@@ -9,3 +9,21 @@ The following properties are ensured:
 1. Once a baboon has begun to cross, it is guaranteed to get to the other side without running into a baboon going the other way.
 2. There are never more than 5 baboons on the rope.
 3. A continuing stream of baboons crossing in one direction should not bar baboons going the other way indefinitely (no starvation).
+
+## Running the gui for ubuntu:
+
+1. Install vpython
+`
+sudo apt-get install python-visual
+sudo apt-get install libgtkglextmm-x11-1.2-dev
+`
+
+2. Install pygame
+`
+sudo apt-get install python-pygame
+`
+
+3. Run gui.py file
+`
+python2 gui.py
+`
