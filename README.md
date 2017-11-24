@@ -13,17 +13,17 @@ The following properties are ensured:
 ## Running the gui for ubuntu:
 
 1. Install vpython
-`
+```python2
 sudo apt-get install python-visual
 sudo apt-get install libgtkglextmm-x11-1.2-dev
-`
+```
 
 2. Install pygame
-`
+```python2
 sudo apt-get install python-pygame
-`
+```
 
 3. Run gui.py file
-`
+```python2
 python2 gui.py
-`
+```
