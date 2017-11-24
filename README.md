@@ -1,4 +1,4 @@
-# baboon-crossing-problem
+# Baboon Crossing Problem
 
 ## Problem description:
 
@@ -26,4 +26,18 @@ sudo apt-get install python-pygame
 3. Run gui.py file
 ```python2
 python2 gui.py
+```
+
+## User options:
+### These options can be set by the user by editing the source gui.py file.
+```python2
+# default values
+max_on_rope = 5 
+left_baboon_count = 15
+right_baboon_count = 15
+
+# uncomment to select music
+#mixer.music.load('songs/five-little-mokeys.mp3')
+mixer.music.load('songs/mowgli-sahara-theme.mp3')
+#mixer.music.load('songs/monkey.mp3')
 ```
